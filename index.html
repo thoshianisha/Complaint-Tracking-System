@@ -2,39 +2,58 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Complaint Tracking System</title>
 
     <link rel="stylesheet" href="student.css">
+
 </head>
+
 
 <body>
 
 
-<!-- ==========================================
+<!-- =====================================================
      LOGIN PAGE
-     ========================================== -->
+     ===================================================== -->
 
 <div id="loginPage" class="login-page">
 
     <div class="login-box">
 
+
+        <!-- LOGO -->
+
         <div class="login-logo">
-            CTS
+
+            <div class="logo-box">
+                CTS
+            </div>
+
+            <div>
+
+                <h1>
+                    Complaint Tracking System
+                </h1>
+
+                <p>
+                    Student & Faculty Portal
+                </p>
+
+            </div>
+
         </div>
 
-        <h1>Complaint Tracking System</h1>
-
-        <p class="login-subtitle">
-            Student & Faculty Portal
-        </p>
 
 
-        <!-- ROLE SELECTION -->
+        <!-- ROLE BUTTONS -->
 
-        <div class="role-selection">
+        <div class="role-buttons">
 
             <button
                 type="button"
@@ -42,7 +61,7 @@
                 class="role-btn active"
                 onclick="selectRole('student')">
 
-                👨‍🎓 Student Login
+                🎓 Student Login
 
             </button>
 
@@ -60,57 +79,189 @@
         </div>
 
 
-        <!-- LOGIN FORM -->
 
-        <form id="loginForm">
+        <!-- =================================================
+             LOGIN FORM
+             ================================================= -->
 
-            <div class="input-group">
+        <div id="loginBox">
 
-                <label id="loginIdLabel">
-                    Student ID
+            <h2 id="loginTitle">
+                Student Login
+            </h2>
+
+            <p class="form-subtitle">
+                Login to access your complaint portal
+            </p>
+
+
+            <form
+                id="loginForm"
+                onsubmit="login(); return false;">
+
+
+                <label for="loginId">
+                    Login ID
                 </label>
 
                 <input
                     type="text"
-                    id="studentId"
-                    placeholder="Example: STU2026001"
-                    autocomplete="off"
-                    required
-                >
-
-            </div>
+                    id="loginId"
+                    placeholder="Enter your Login ID"
+                    required>
 
 
-            <div class="input-group">
 
-                <label>
+                <label for="loginPassword">
                     Password
                 </label>
 
                 <input
                     type="password"
-                    id="password"
-                    placeholder="Enter Password"
-                    required
-                >
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required>
+
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Login →
+
+                </button>
+
+            </form>
+
+
+            <p
+                id="loginMessage"
+                class="message">
+            </p>
+
+
+            <div class="register-link">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    onclick="showRegister()">
+
+                    Register
+
+                </button>
 
             </div>
 
-
-            <button
-                type="submit"
-                class="login-btn">
-
-                Login
-
-            </button>
-
-        </form>
+        </div>
 
 
-        <p class="login-note">
-            Use your registered Student ID or Faculty ID
-        </p>
+
+        <!-- =================================================
+             REGISTER FORM
+             ================================================= -->
+
+        <div
+            id="registerBox"
+            style="display:none;">
+
+
+            <h2 id="registerTitle">
+                Student Registration
+            </h2>
+
+            <p class="form-subtitle">
+                Create your complaint portal account
+            </p>
+
+
+            <form
+                id="registerForm"
+                onsubmit="registerUser(); return false;">
+
+
+                <label for="registerName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter your full name"
+                    required>
+
+
+
+                <label for="registerId">
+                    Login ID
+                </label>
+
+                <input
+                    type="text"
+                    id="registerId"
+                    placeholder="Create Login ID"
+                    required>
+
+
+
+                <label for="registerPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create password"
+                    required>
+
+
+
+                <label for="registerConfirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="registerConfirmPassword"
+                    placeholder="Confirm password"
+                    required>
+
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Create Account →
+
+                </button>
+
+            </form>
+
+
+            <p
+                id="registerMessage"
+                class="message">
+            </p>
+
+
+            <div class="register-link">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    onclick="showLogin()">
+
+                    Login
+
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -118,69 +269,116 @@
 
 
 
-<!-- ==========================================
+<!-- =====================================================
      DASHBOARD PAGE
-     ========================================== -->
+     ===================================================== -->
 
-<div id="dashboardPage" class="dashboard-page">
+<div
+    id="dashboardPage"
+    class="dashboard-page"
+    style="display:none;">
 
 
-    <!-- ======================================
+
+    <!-- =================================================
          SIDEBAR
-         ====================================== -->
+         ================================================= -->
 
     <aside class="sidebar">
 
 
+        <!-- SIDEBAR LOGO -->
+
         <div class="sidebar-logo">
 
-            <div class="logo-circle">
+            <div class="sidebar-logo-icon">
                 CTS
             </div>
 
-            <h2>
-                Complaint<br>
-                Tracking System
-            </h2>
+            <div>
+
+                <h2>
+                    Complaint
+                    <br>
+                    Tracking System
+                </h2>
+
+            </div>
 
         </div>
 
 
-        <div id="userRole" class="user-role">
-            Student Portal
+
+        <!-- PORTAL NAME -->
+
+        <div class="portal-title">
+
+            <span id="portalTitle">
+                Student Portal
+            </span>
+
         </div>
 
 
-        <nav class="sidebar-nav">
+
+        <!-- NAVIGATION -->
+
+        <nav>
 
 
-            <!-- STUDENT MENU -->
+            <!-- DASHBOARD -->
+
+            <button
+                type="button"
+                class="nav-btn active"
+                onclick="showSection('dashboardSection', this)">
+
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                Dashboard
+
+            </button>
+
+
+
+            <!-- =================================================
+                 STUDENT MENU
+                 ================================================= -->
 
             <div id="studentMenu">
 
-                <button
-                    class="nav-item active"
-                    onclick="showSection('dashboardSection')">
 
-                    🏠 Dashboard
+                <!-- SUBMIT -->
+
+                <button
+                    type="button"
+                    class="nav-btn"
+                    onclick="showSection('submitSection', this)">
+
+                    <span class="nav-icon">
+                        📝
+                    </span>
+
+                    Submit Complaint
 
                 </button>
 
 
-                <button
-                    class="nav-item"
-                    onclick="showSection('submitSection')">
 
-                    📝 Submit Complaint
-
-                </button>
-
+                <!-- TRACK -->
 
                 <button
-                    class="nav-item"
-                    onclick="showSection('trackSection')">
+                    type="button"
+                    class="nav-btn"
+                    onclick="showSection('trackSection', this)">
 
-                    🔍 Track Complaints
+                    <span class="nav-icon">
+                        🔍
+                    </span>
+
+                    Track Complaints
 
                 </button>
 
@@ -188,35 +386,44 @@
 
 
 
-            <!-- FACULTY MENU -->
+            <!-- =================================================
+                 FACULTY MENU
+                 ================================================= -->
 
             <div
                 id="facultyMenu"
                 style="display:none;">
 
-                <button
-                    class="nav-item active"
-                    onclick="showSection('dashboardSection')">
 
-                    🏠 Dashboard
+                <!-- VIEW COMPLAINTS -->
+
+                <button
+                    type="button"
+                    class="nav-btn"
+                    onclick="showSection('facultyComplaintsSection', this)">
+
+                    <span class="nav-icon">
+                        📋
+                    </span>
+
+                    View Complaints
 
                 </button>
 
 
-                <button
-                    class="nav-item"
-                    onclick="showSection('facultyComplaintsSection')">
 
-                    📋 View Complaints
-
-                </button>
-
+                <!-- UPDATE STATUS -->
 
                 <button
-                    class="nav-item"
-                    onclick="showSection('updateStatusSection')">
+                    type="button"
+                    class="nav-btn"
+                    onclick="showSection('updateStatusSection', this)">
 
-                    🔄 Update Status
+                    <span class="nav-icon">
+                        🔄
+                    </span>
+
+                    Update Status
 
                 </button>
 
@@ -224,33 +431,55 @@
 
 
 
-            <!-- COMMON MENU -->
+            <!-- PROFILE -->
 
             <button
-                class="nav-item"
-                onclick="showSection('profileSection')">
+                type="button"
+                class="nav-btn"
+                onclick="showSection('profileSection', this)">
 
-                👤 My Profile
+                <span class="nav-icon">
+                    👤
+                </span>
+
+                My Profile
 
             </button>
 
 
-            <button
-                class="nav-item"
-                onclick="showSection('passwordSection')">
 
-                🔐 Change Password
+            <!-- PASSWORD -->
+
+            <button
+                type="button"
+                class="nav-btn"
+                onclick="showSection('passwordSection', this)">
+
+                <span class="nav-icon">
+                    🔐
+                </span>
+
+                Change Password
 
             </button>
 
 
-            <button
-                id="logoutBtn"
-                class="nav-item logout-btn">
 
-                🚪 Logout
+            <!-- LOGOUT -->
+
+            <button
+                type="button"
+                class="nav-btn logout-btn"
+                onclick="logout()">
+
+                <span class="nav-icon">
+                    🚪
+                </span>
+
+                Logout
 
             </button>
+
 
         </nav>
 
@@ -258,16 +487,20 @@
 
 
 
-    <!-- ======================================
+    <!-- =====================================================
          MAIN CONTENT
-         ====================================== -->
+         ===================================================== -->
 
     <main class="main-content">
 
 
-        <!-- TOP BAR -->
 
-        <div class="topbar">
+        <!-- =================================================
+             TOP BAR
+             ================================================= -->
+
+        <header class="topbar">
+
 
             <div>
 
@@ -282,21 +515,20 @@
             </div>
 
 
+
+            <!-- USER -->
+
             <div class="top-user">
 
                 <div class="user-avatar">
                     👤
                 </div>
 
-
                 <div>
 
-                    <!-- ACTUAL NAME WILL APPEAR HERE -->
-
-                    <strong id="studentName">
+                    <span id="studentName">
                         User
-                    </strong>
-
+                    </span>
 
                     <small id="topUserRole">
                         Student
@@ -306,245 +538,369 @@
 
             </div>
 
-        </div>
+
+        </header>
 
 
 
-        <!-- ======================================
+        <!-- =================================================
              DASHBOARD
-             ====================================== -->
+             ================================================= -->
 
         <section
             id="dashboardSection"
             class="content-section">
 
 
+            <!-- WELCOME CARD -->
+
             <div class="welcome-card">
 
-                <h1>
-                    Welcome,
-                    <span id="welcomeName">
-                        User
-                    </span>! 👋
-                </h1>
 
-                <p>
-                    Manage and track complaints easily from your portal.
-                </p>
+                <div>
+
+                    <h1>
+
+                        Welcome,
+                        <span id="welcomeName">
+                            User
+                        </span>
+
+                        👋
+
+                    </h1>
+
+
+                    <p>
+                        Manage and track complaints easily from your portal.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome-shape">
+                    ✨
+                </div>
+
 
             </div>
 
 
 
-            <!-- STUDENT STATISTICS -->
+            <!-- =================================================
+                 STUDENT STAT CARDS
+                 ================================================= -->
 
             <div
                 id="studentStats"
                 class="stats-grid">
 
 
-                <div class="stat-card">
+                <!-- TOTAL -->
+
+                <div class="stat-card total-card">
+
 
                     <div class="stat-icon">
                         📋
                     </div>
 
-                    <div>
 
-                        <h3 id="totalComplaints">
+                    <div class="stat-info">
+
+                        <strong id="totalComplaints">
                             0
+                        </strong>
+
+                        <h3>
+                            Total Complaints
                         </h3>
 
-                        <p>
-                            Total Complaints
-                        </p>
-
                     </div>
+
 
                 </div>
 
 
-                <div class="stat-card">
+
+                <!-- PENDING -->
+
+                <div class="stat-card pending-card">
+
 
                     <div class="stat-icon">
                         ⏳
                     </div>
 
-                    <div>
 
-                        <h3 id="pendingComplaints">
+                    <div class="stat-info">
+
+                        <strong id="pendingComplaints">
                             0
+                        </strong>
+
+                        <h3>
+                            Pending
                         </h3>
 
-                        <p>
-                            Pending
-                        </p>
-
                     </div>
+
 
                 </div>
 
 
-                <div class="stat-card">
+
+                <!-- IN PROGRESS -->
+
+                <div class="stat-card progress-card">
+
 
                     <div class="stat-icon">
                         🔄
                     </div>
 
-                    <div>
 
-                        <h3 id="progressComplaints">
+                    <div class="stat-info">
+
+                        <strong id="progressComplaints">
                             0
+                        </strong>
+
+                        <h3>
+                            In Progress
                         </h3>
 
-                        <p>
-                            In Progress
-                        </p>
-
                     </div>
+
 
                 </div>
 
 
-                <div class="stat-card">
+
+                <!-- RESOLVED -->
+
+                <div class="stat-card resolved-card">
+
 
                     <div class="stat-icon">
                         ✅
                     </div>
 
-                    <div>
 
-                        <h3 id="resolvedComplaints">
+                    <div class="stat-info">
+
+                        <strong id="resolvedComplaints">
                             0
+                        </strong>
+
+                        <h3>
+                            Resolved
                         </h3>
 
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FACULTY DASHBOARD
+                 ================================================= -->
+
+            <div
+                id="facultyDashboard"
+                style="display:none;">
+
+
+                <div class="faculty-welcome">
+
+
+                    <div class="faculty-icon">
+                        👨‍🏫
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Faculty Complaint Management
+                        </h2>
+
                         <p>
-                            Resolved
+                            View student complaints and update their status.
                         </p>
 
                     </div>
 
+
                 </div>
 
-            </div>
-
-
-
-            <!-- FACULTY DASHBOARD -->
-
-            <div
-                id="facultyDashboard"
-                class="faculty-info-card"
-                style="display:none;">
-
-                <h2>
-                    Faculty Dashboard 👨‍🏫
-                </h2>
-
-                <p>
-                    View student complaints and update their status
-                    from the faculty portal.
-                </p>
 
             </div>
+
 
         </section>
 
 
 
-        <!-- ======================================
+        <!-- =================================================
              SUBMIT COMPLAINT
-             ====================================== -->
+             ================================================= -->
 
         <section
             id="submitSection"
             class="content-section"
             style="display:none;">
 
+
             <div class="section-card">
 
-                <h2>
-                    Submit Complaint
-                </h2>
 
-                <p>
-                    Submit your complaint with the required details.
-                </p>
+                <div class="section-heading">
+
+
+                    <div class="heading-icon purple">
+                        📝
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Submit Complaint
+                        </h2>
+
+                        <p>
+                            Raise your complaint to the appropriate authority.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
 
                 <form id="complaintForm">
 
 
-                    <div class="form-row">
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                        </label>
 
 
-                        <div class="input-group">
-
-                            <label>
-                                Complaint Category
-                            </label>
-
-                            <select
-                                id="category"
-                                required>
-
-                                <option value="">
-                                    Select Category
-                                </option>
-
-                                <option value="Academic">
-                                    Academic
-                                </option>
-
-                                <option value="Hostel">
-                                    Hostel
-                                </option>
-
-                                <option value="Transport">
-                                    Transport
-                                </option>
-
-                                <option value="Infrastructure">
-                                    Infrastructure
-                                </option>
-
-                                <option value="Faculty">
-                                    Faculty
-                                </option>
-
-                                <option value="Other">
-                                    Other
-                                </option>
-
-                            </select>
-
-                        </div>
+                        <select
+                            id="category"
+                            required>
 
 
+                            <option value="">
+                                Select Category
+                            </option>
 
-                        <div class="input-group">
 
-                            <label>
-                                Location
-                            </label>
+                            <option value="Academic">
+                                Academic
+                            </option>
 
-                            <input
-                                type="text"
-                                id="location"
-                                placeholder="Enter location"
-                                required>
 
-                        </div>
+                            <option value="Hostel">
+                                Hostel
+                            </option>
+
+
+                            <option value="Transport">
+                                Transport
+                            </option>
+
+
+                            <option value="Infrastructure">
+                                Infrastructure
+                            </option>
+
+
+                            <option value="Faculty">
+                                Faculty
+                            </option>
+
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+
+                        </select>
 
                     </div>
 
 
 
-                    <div class="input-group">
+                    <!-- COMPLAINT TO -->
 
-                        <label>
-                            Complaint Subject
+                    <div class="form-group">
+
+                        <label for="complaintTo">
+                            Complaint To
                         </label>
+
+
+                        <select
+                            id="complaintTo"
+                            required>
+
+
+                            <option value="">
+                                Select authority
+                            </option>
+
+
+                            <option value="Class Teacher (CT)">
+                                Class Teacher (CT)
+                            </option>
+
+
+                            <option value="HOD">
+                                HOD
+                            </option>
+
+
+                            <option value="Dean">
+                                Dean
+                            </option>
+
+
+                            <option value="Principal">
+                                Principal
+                            </option>
+
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- SUBJECT -->
+
+                    <div class="form-group">
+
+                        <label for="subject">
+                            Subject
+                        </label>
+
 
                         <input
                             type="text"
@@ -556,31 +912,61 @@
 
 
 
-                    <div class="input-group">
+                    <!-- LOCATION -->
 
-                        <label>
-                            Complaint Description
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
                         </label>
+
+
+                        <input
+                            type="text"
+                            id="location"
+                            placeholder="Where did the issue occur?"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group full-width">
+
+                        <label for="description">
+                            Description
+                        </label>
+
 
                         <textarea
                             id="description"
-                            rows="6"
-                            placeholder="Describe your complaint..."
+                            rows="5"
+                            placeholder="Explain your complaint in detail..."
                             required></textarea>
 
                     </div>
 
 
 
-                    <button
-                        type="submit"
-                        class="submit-btn">
+                    <!-- BUTTON -->
 
-                        Submit Complaint
+                    <div class="full-width">
 
-                    </button>
+                        <button
+                            type="submit"
+                            class="primary-btn">
+
+                            Submit Complaint 🚀
+
+                        </button>
+
+                    </div>
+
 
                 </form>
+
 
             </div>
 
@@ -588,29 +974,49 @@
 
 
 
-        <!-- ======================================
+        <!-- =================================================
              TRACK COMPLAINTS
-             ====================================== -->
+             ================================================= -->
 
         <section
             id="trackSection"
             class="content-section"
             style="display:none;">
 
+
             <div class="section-card">
 
-                <h2>
-                    Track Complaints
-                </h2>
 
-                <p>
-                    Track the status of your submitted complaints.
-                </p>
+                <div class="section-heading">
+
+
+                    <div class="heading-icon blue">
+                        🔍
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Track My Complaints
+                        </h2>
+
+                        <p>
+                            View the current status of your complaints.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
 
                 <div class="table-container">
 
+
                     <table>
+
 
                         <thead>
 
@@ -618,6 +1024,10 @@
 
                                 <th>
                                     Complaint ID
+                                </th>
+
+                                <th>
+                                    Complaint To
                                 </th>
 
                                 <th>
@@ -645,39 +1055,63 @@
 
                         </tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
 
-        <!-- ======================================
-             FACULTY COMPLAINTS
-             ====================================== -->
+        <!-- =================================================
+             FACULTY VIEW COMPLAINTS
+             ================================================= -->
 
         <section
             id="facultyComplaintsSection"
             class="content-section"
             style="display:none;">
 
+
             <div class="section-card">
 
-                <h2>
-                    Student Complaints
-                </h2>
 
-                <p>
-                    View complaints submitted by students.
-                </p>
+                <div class="section-heading">
+
+
+                    <div class="heading-icon orange">
+                        📋
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Student Complaints
+                        </h2>
+
+                        <p>
+                            View complaints submitted by students.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
 
                 <div class="table-container">
 
+
                     <table>
+
 
                         <thead>
 
@@ -692,7 +1126,7 @@
                                 </th>
 
                                 <th>
-                                    Student Name
+                                    Complaint To
                                 </th>
 
                                 <th>
@@ -716,270 +1150,315 @@
 
                         </tbody>
 
+
                     </table>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
 
-        <!-- ======================================
+        <!-- =================================================
              UPDATE STATUS
-             ====================================== -->
+             ================================================= -->
 
         <section
             id="updateStatusSection"
             class="content-section"
             style="display:none;">
 
+
             <div class="section-card">
 
-                <h2>
-                    Update Complaint Status
-                </h2>
 
-                <p>
-                    Update the status of a student complaint.
-                </p>
+                <div class="section-heading">
+
+
+                    <div class="heading-icon mint">
+                        🔄
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Update Complaint Status
+                        </h2>
+
+                        <p>
+                            Update the current status of a complaint.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
 
                 <form id="statusForm">
 
 
-                    <div class="input-group">
+                    <label for="statusComplaintId">
+                        Complaint ID
+                    </label>
 
-                        <label>
-                            Complaint ID
-                        </label>
 
-                        <input
-                            type="text"
-                            id="statusComplaintId"
-                            placeholder="Example: CMP001"
-                            required>
-
-                    </div>
+                    <input
+                        type="text"
+                        id="statusComplaintId"
+                        placeholder="Example: CMP001"
+                        required>
 
 
 
-                    <div class="input-group">
+                    <label for="newStatus">
+                        New Status
+                    </label>
 
-                        <label>
-                            New Status
-                        </label>
 
-                        <select
-                            id="newStatus"
-                            required>
+                    <select
+                        id="newStatus"
+                        required>
 
-                            <option value="">
-                                Select Status
-                            </option>
 
-                            <option value="Pending">
-                                Pending
-                            </option>
+                        <option value="">
+                            Select Status
+                        </option>
 
-                            <option value="In Progress">
-                                In Progress
-                            </option>
 
-                            <option value="Resolved">
-                                Resolved
-                            </option>
+                        <option value="Pending">
+                            Pending
+                        </option>
 
-                        </select>
 
-                    </div>
+                        <option value="In Progress">
+                            In Progress
+                        </option>
+
+
+                        <option value="Resolved">
+                            Resolved
+                        </option>
+
+
+                    </select>
 
 
 
                     <button
                         type="submit"
-                        class="submit-btn">
+                        class="primary-btn">
 
-                        Update Status
+                        Update Status 🔄
 
                     </button>
 
+
                 </form>
 
+
             </div>
+
 
         </section>
 
 
 
-        <!-- ======================================
-             MY PROFILE
-             ====================================== -->
+        <!-- =================================================
+             PROFILE
+             ================================================= -->
 
         <section
             id="profileSection"
             class="content-section"
             style="display:none;">
 
+
             <div class="section-card profile-card">
 
-                <h2>
-                    My Profile
-                </h2>
 
-                <p>
-                    View your account information.
-                </p>
+                <div class="section-heading">
 
 
-                <div class="profile-avatar">
-                    👤
+                    <div class="heading-icon purple">
+                        👤
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            My Profile
+                        </h2>
+
+                        <p>
+                            View your account information.
+                        </p>
+
+                    </div>
+
+
                 </div>
 
 
-                <div class="profile-info">
+
+                <label for="profileId">
+                    Login ID
+                </label>
 
 
-                    <div>
-
-                        <span>
-                            User ID
-                        </span>
-
-                        <strong id="profileId">
-                            -
-                        </strong>
-
-                    </div>
+                <input
+                    type="text"
+                    id="profileId"
+                    readonly>
 
 
 
-                    <div>
+                <label for="profileName">
+                    Name
+                </label>
 
-                        <span>
-                            Name
-                        </span>
 
-                        <strong id="profileName">
-                            -
-                        </strong>
-
-                    </div>
+                <input
+                    type="text"
+                    id="profileName"
+                    readonly>
 
 
 
-                    <div>
+                <label for="profileRole">
+                    Role
+                </label>
 
-                        <span>
-                            Role
-                        </span>
 
-                        <strong id="profileRole">
-                            -
-                        </strong>
+                <input
+                    type="text"
+                    id="profileRole"
+                    readonly>
 
-                    </div>
-
-                </div>
 
             </div>
+
 
         </section>
 
 
 
-        <!-- ======================================
+        <!-- =================================================
              CHANGE PASSWORD
-             ====================================== -->
+             ================================================= -->
 
         <section
             id="passwordSection"
             class="content-section"
             style="display:none;">
 
-            <div class="section-card profile-card">
 
-                <h2>
-                    Change Password
-                </h2>
+            <div class="section-card password-card">
 
-                <p>
-                    Update your account password.
-                </p>
+
+                <div class="section-heading">
+
+
+                    <div class="heading-icon orange">
+                        🔐
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Change Password
+                        </h2>
+
+                        <p>
+                            Update your account password.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
 
                 <form id="passwordForm">
 
 
-                    <div class="input-group">
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
 
-                        <label>
-                            Current Password
-                        </label>
 
-                        <input
-                            type="password"
-                            id="currentPassword"
-                            placeholder="Enter current password"
-                            required>
-
-                    </div>
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        required>
 
 
 
-                    <div class="input-group">
+                    <label for="newPassword">
+                        New Password
+                    </label>
 
-                        <label>
-                            New Password
-                        </label>
 
-                        <input
-                            type="password"
-                            id="newPassword"
-                            placeholder="Enter new password"
-                            required>
-
-                    </div>
+                    <input
+                        type="password"
+                        id="newPassword"
+                        required>
 
 
 
-                    <div class="input-group">
+                    <label for="confirmPassword">
+                        Confirm New Password
+                    </label>
 
-                        <label>
-                            Confirm New Password
-                        </label>
 
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            placeholder="Confirm new password"
-                            required>
-
-                    </div>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        required>
 
 
 
                     <button
                         type="submit"
-                        class="submit-btn">
+                        class="primary-btn">
 
-                        Change Password
+                        Change Password 🔐
 
                     </button>
 
+
                 </form>
+
 
             </div>
 
+
         </section>
+
 
     </main>
 
 </div>
 
 
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
 <script src="student.js"></script>
 
+
 </body>
+
 </html>

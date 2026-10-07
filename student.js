@@ -1,122 +1,26 @@
-// ==========================================
-// COMPLAINT TRACKING SYSTEM
-// STUDENT + FACULTY
-// ==========================================
-
-
-// ==========================================
-// REGISTERED USERS
-// ==========================================
-
-const users = {
-
-    // ==========================
-    // STUDENTS
-    // ==========================
-
-    "STU202643": {
-        name: "Anisha",
-        role: "student",
-        password: "123456"
-    },
-
-    "STU202645": {
-        name: "Pushpa",
-        role: "student",
-        password: "123456"
-    },
-
-    "STU202657": {
-        name: "Manoj",
-        role: "student",
-        password: "123456"
-    },
-
-    "STU202628": {
-        name: "Prudhvi",
-        role: "student",
-        password: "123456"
-    },
-
-    "STU202620": {
-        name: "Michel",
-        role: "student",
-        password: "123456"
-    },
-
-    "STU202661": {
-        name: "Lakshman",
-        role: "student",
-        password: "123456"
-    },
-
-
-    // ==========================
-    // FACULTY
-    // ==========================
-
-    "FAC001": {
-        name: "Kanoj Kumar",
-        role: "faculty",
-        password: "123456"
-    },
-
-    "FAC002": {
-        name: "Anusha",
-        role: "faculty",
-        password: "123456"
-    },
-
-    "FAC003": {
-        name: "Jhansi",
-        role: "faculty",
-        password: "123456"
-    },
-
-    "FAC004": {
-        name: "Mastan Rao",
-        role: "faculty",
-        password: "123456"
-    }
-
-};
-
-
-// ==========================================
-// CURRENT USER
-// ==========================================
+/* =====================================================
+   COMPLAINT TRACKING SYSTEM
+   STUDENT + FACULTY
+   ===================================================== */
 
 let currentRole = "student";
 let currentUser = null;
 
 
-// ==========================================
-// COMPLAINT STORAGE
-// ==========================================
+/* =====================================================
+   LOCAL STORAGE
+   ===================================================== */
 
-let complaints = [];
+let complaints =
+    JSON.parse(localStorage.getItem("complaints") || "[]");
 
-
-// ==========================================
-// PAGE ELEMENTS
-// ==========================================
-
-const loginPage =
-    document.getElementById("loginPage");
-
-const dashboardPage =
-    document.getElementById("dashboardPage");
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
+let registeredUsers =
+    JSON.parse(localStorage.getItem("registeredUsers") || "[]");
 
 
-// ==========================================
-// ROLE SELECTION
-// ==========================================
+/* =====================================================
+   ROLE SELECTION
+   ===================================================== */
 
 function selectRole(role) {
 
@@ -128,414 +32,364 @@ function selectRole(role) {
     const facultyBtn =
         document.getElementById("facultyRoleBtn");
 
-    const loginIdLabel =
-        document.getElementById("loginIdLabel");
+    document.getElementById("loginTitle").textContent =
+        role === "student"
+            ? "Student Login"
+            : "Faculty Login";
 
-    const studentIdInput =
-        document.getElementById("studentId");
-
+    document.getElementById("registerTitle").textContent =
+        role === "student"
+            ? "Student Registration"
+            : "Faculty Registration";
 
     if (role === "student") {
 
         studentBtn.classList.add("active");
         facultyBtn.classList.remove("active");
 
-        loginIdLabel.textContent =
-            "Student ID";
-
-        studentIdInput.placeholder =
-            "Example: STU202643";
-
-    }
-
-    else {
+    } else {
 
         facultyBtn.classList.add("active");
         studentBtn.classList.remove("active");
-
-        loginIdLabel.textContent =
-            "Faculty ID";
-
-        studentIdInput.placeholder =
-            "Example: FAC001";
-
     }
-
 }
 
 
-// ==========================================
-// LOGIN
-// ==========================================
+/* =====================================================
+   LOGIN / REGISTER BOX
+   ===================================================== */
 
-loginForm.addEventListener(
-    "submit",
-    function (event) {
+function showLogin() {
 
-        event.preventDefault();
+    document.getElementById("loginBox").style.display =
+        "block";
 
-
-        const userId =
-            document.getElementById("studentId")
-                .value
-                .trim()
-                .toUpperCase();
+    document.getElementById("registerBox").style.display =
+        "none";
+}
 
 
-        const password =
-            document.getElementById("password")
-                .value
-                .trim();
+function showRegister() {
+
+    document.getElementById("loginBox").style.display =
+        "none";
+
+    document.getElementById("registerBox").style.display =
+        "block";
+}
 
 
-        // EMPTY CHECK
+/* =====================================================
+   REGISTER
+   ===================================================== */
 
-        if (userId === "" || password === "") {
+function registerUser() {
 
-            alert(
-                "Please enter ID and Password."
-            );
+    const name =
+        document.getElementById("registerName").value.trim();
 
-            return;
-        }
+    const loginId =
+        document.getElementById("registerId").value.trim();
 
+    const password =
+        document.getElementById("registerPassword").value;
 
-        // ==========================
-        // STUDENT ID FORMAT
-        // ==========================
-
-        if (
-            currentRole === "student" &&
-            !userId.startsWith("STU")
-        ) {
-
-            alert(
-                "Invalid Student ID.\n\n" +
-                "Student ID must start with STU.\n" +
-                "Example: STU202643"
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // FACULTY ID FORMAT
-        // ==========================
-
-        if (
-            currentRole === "faculty" &&
-            !userId.startsWith("FAC")
-        ) {
-
-            alert(
-                "Invalid Faculty ID.\n\n" +
-                "Faculty ID must start with FAC.\n" +
-                "Example: FAC001"
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // CHECK USER
-        // ==========================
-
-        const user = users[userId];
-
-
-        if (!user) {
-
-            alert(
-                "User ID not found.\n\n" +
-                "Please enter a registered ID."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // CHECK ROLE
-        // ==========================
-
-        if (user.role !== currentRole) {
-
-            alert(
-                "This ID does not belong to the selected role."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // CHECK PASSWORD
-        // ==========================
-
-        if (user.password !== password) {
-
-            alert(
-                "Incorrect password."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // LOGIN SUCCESS
-        // ==========================
-
-        currentUser = {
-
-            id: userId,
-
-            name: user.name,
-
-            role: user.role
-
-        };
-
-
-        // ==========================
-        // DISPLAY NAME
-        // ==========================
-
+    const confirmPassword =
         document.getElementById(
-            "studentName"
-        ).textContent = user.name;
+            "registerConfirmPassword"
+        ).value;
+
+    const message =
+        document.getElementById("registerMessage");
+
+    message.textContent = "";
 
 
-        document.getElementById(
-            "welcomeName"
-        ).textContent = user.name;
+    if (!name || !loginId || !password || !confirmPassword) {
+
+        message.textContent =
+            "Please fill all fields.";
+
+        return;
+    }
 
 
-        // ==========================
-        // PROFILE
-        // ==========================
+    if (password.length < 6) {
 
-        document.getElementById(
-            "profileId"
-        ).textContent = userId;
+        message.textContent =
+            "Password must contain at least 6 characters.";
 
-
-        document.getElementById(
-            "profileName"
-        ).textContent = user.name;
+        return;
+    }
 
 
-        document.getElementById(
-            "profileRole"
-        ).textContent =
-            user.role === "student"
-                ? "Student"
-                : "Faculty";
+    if (password !== confirmPassword) {
+
+        message.textContent =
+            "Passwords do not match.";
+
+        return;
+    }
 
 
-        // ==========================
-        // STUDENT LOGIN
-        // ==========================
-
-        if (currentRole === "student") {
-
-            document.getElementById(
-                "userRole"
-            ).textContent =
-                "Student Portal";
-
-
-            document.getElementById(
-                "topUserRole"
-            ).textContent =
-                "Student";
-
-
-            document.getElementById(
-                "studentMenu"
-            ).style.display =
-                "block";
-
-
-            document.getElementById(
-                "facultyMenu"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "studentStats"
-            ).style.display =
-                "grid";
-
-
-            document.getElementById(
-                "facultyDashboard"
-            ).style.display =
-                "none";
-
-        }
-
-
-        // ==========================
-        // FACULTY LOGIN
-        // ==========================
-
-        else {
-
-            document.getElementById(
-                "userRole"
-            ).textContent =
-                "Faculty Portal";
-
-
-            document.getElementById(
-                "topUserRole"
-            ).textContent =
-                "Faculty";
-
-
-            document.getElementById(
-                "studentMenu"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "facultyMenu"
-            ).style.display =
-                "block";
-
-
-            document.getElementById(
-                "studentStats"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "facultyDashboard"
-            ).style.display =
-                "block";
-
-        }
-
-
-        // ==========================
-        // SHOW DASHBOARD
-        // ==========================
-
-        loginPage.style.display =
-            "none";
-
-        dashboardPage.style.display =
-            "block";
-
-
-        showSection(
-            "dashboardSection"
+    const existingUser =
+        registeredUsers.find(
+            user =>
+                user.loginId.toLowerCase() ===
+                loginId.toLowerCase()
         );
 
 
-        updateDashboard();
+    if (existingUser) {
 
-        displayStudentComplaints();
+        message.textContent =
+            "This Login ID is already registered.";
 
-        displayFacultyComplaints();
-
-
-        // CLEAR LOGIN FORM
-
-        loginForm.reset();
-
+        return;
     }
-);
 
 
-// ==========================================
-// LOGOUT
-// ==========================================
+    registeredUsers.push({
 
-logoutBtn.addEventListener(
-    "click",
-    function () {
+        name: name,
+        loginId: loginId,
+        password: password,
+        role: currentRole
 
-        const confirmLogout =
-            confirm(
-                "Are you sure you want to logout?"
-            );
+    });
 
 
-        if (confirmLogout) {
-
-            dashboardPage.style.display =
-                "none";
-
-
-            loginPage.style.display =
-                "flex";
-
-
-            currentRole =
-                "student";
-
-
-            currentUser =
-                null;
-
-
-            selectRole(
-                "student"
-            );
-
-
-            loginForm.reset();
-
-        }
-
-    }
-);
-
-
-// ==========================================
-// SHOW SECTION
-// ==========================================
-
-function showSection(sectionId) {
-
-    const sections =
-        document.querySelectorAll(
-            ".content-section"
-        );
-
-
-    sections.forEach(
-        section => {
-
-            section.style.display =
-                "none";
-
-        }
+    localStorage.setItem(
+        "registeredUsers",
+        JSON.stringify(registeredUsers)
     );
 
 
-    const selectedSection =
-        document.getElementById(
-            sectionId
+    message.textContent =
+        "Registration successful! Please login.";
+
+
+    document.getElementById("registerForm").reset();
+
+
+    setTimeout(() => {
+
+        showLogin();
+
+    }, 1000);
+}
+
+
+/* =====================================================
+   LOGIN
+   ===================================================== */
+
+function login() {
+
+    const loginId =
+        document.getElementById("loginId").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const message =
+        document.getElementById("loginMessage");
+
+    message.textContent = "";
+
+
+    if (!loginId || !password) {
+
+        message.textContent =
+            "Please enter Login ID and Password.";
+
+        return;
+    }
+
+
+    const registeredUser =
+        registeredUsers.find(
+            user =>
+                user.loginId.toLowerCase() ===
+                loginId.toLowerCase() &&
+
+                user.password === password &&
+
+                user.role === currentRole
         );
+
+
+    /*
+       Demo login:
+       If user is not registered, login is still allowed.
+    */
+
+    if (registeredUser) {
+
+        currentUser = registeredUser;
+
+    } else {
+
+        currentUser = {
+
+            name: loginId,
+            loginId: loginId,
+            password: password,
+            role: currentRole
+
+        };
+    }
+
+
+    openDashboard();
+}
+
+
+/* =====================================================
+   OPEN DASHBOARD
+   ===================================================== */
+
+function openDashboard() {
+
+    document.getElementById("loginPage").style.display =
+        "none";
+
+    document.getElementById("dashboardPage").style.display =
+        "flex";
+
+
+    document.getElementById("studentName").textContent =
+        currentUser.name;
+
+    document.getElementById("welcomeName").textContent =
+        currentUser.name;
+
+
+    document.getElementById("topUserRole").textContent =
+        currentUser.role === "student"
+            ? "Student"
+            : "Faculty";
+
+
+    document.getElementById("portalTitle").textContent =
+        currentUser.role === "student"
+            ? "Student Portal"
+            : "Faculty Portal";
+
+
+    if (currentUser.role === "student") {
+
+        document.getElementById("studentMenu").style.display =
+            "block";
+
+        document.getElementById("facultyMenu").style.display =
+            "none";
+
+        document.getElementById("facultyDashboard").style.display =
+            "none";
+
+    } else {
+
+        document.getElementById("studentMenu").style.display =
+            "none";
+
+        document.getElementById("facultyMenu").style.display =
+            "block";
+
+        document.getElementById("facultyDashboard").style.display =
+            "block";
+    }
+
+
+    updateProfile();
+
+    updateDashboard();
+
+    showSection("dashboardSection");
+}
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+function logout() {
+
+    currentUser = null;
+
+    document.getElementById("dashboardPage").style.display =
+        "none";
+
+    document.getElementById("loginPage").style.display =
+        "flex";
+
+
+    document.getElementById("loginId").value = "";
+
+    document.getElementById("loginPassword").value = "";
+
+    document.getElementById("loginMessage").textContent = "";
+
+
+    selectRole("student");
+
+    showLogin();
+}
+
+
+/* =====================================================
+   SHOW SECTION
+   ===================================================== */
+
+function showSection(sectionId, clickedButton = null) {
+
+    document
+        .querySelectorAll(".content-section")
+        .forEach(section => {
+
+            section.style.display = "none";
+
+        });
+
+
+    const selectedSection =
+        document.getElementById(sectionId);
 
 
     if (selectedSection) {
 
-        selectedSection.style.display =
-            "block";
-
+        selectedSection.style.display = "block";
     }
 
 
-    const titles = {
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button => {
+
+            button.classList.remove("active");
+
+        });
+
+
+    if (clickedButton) {
+
+        clickedButton.classList.add("active");
+
+    } else {
+
+        const dashboardButton =
+            document.querySelector(
+                '.nav-btn[onclick*="dashboardSection"]'
+            );
+
+        if (dashboardButton) {
+
+            dashboardButton.classList.add("active");
+        }
+    }
+
+
+    const titleMap = {
 
         dashboardSection: [
             "Dashboard",
@@ -544,369 +398,500 @@ function showSection(sectionId) {
 
         submitSection: [
             "Submit Complaint",
-            "Submit your complaint"
+            "Raise your complaint to the appropriate authority."
         ],
 
         trackSection: [
             "Track Complaints",
-            "Track the status of your complaints"
+            "View the current status of your complaints."
         ],
 
         facultyComplaintsSection: [
-            "Student Complaints",
-            "View complaints submitted by students"
+            "View Complaints",
+            "View complaints submitted by students."
         ],
 
         updateStatusSection: [
             "Update Complaint Status",
-            "Manage complaint status"
+            "Update the current status of a complaint."
         ],
 
         profileSection: [
             "My Profile",
-            "View your account information"
+            "View your account information."
         ],
 
         passwordSection: [
             "Change Password",
-            "Update your account password"
+            "Update your account password."
         ]
-
     };
 
 
-    if (titles[sectionId]) {
+    if (titleMap[sectionId]) {
 
-        document.getElementById(
-            "pageTitle"
-        ).textContent =
-            titles[sectionId][0];
+        document.getElementById("pageTitle").textContent =
+            titleMap[sectionId][0];
 
-
-        document.getElementById(
-            "pageSubtitle"
-        ).textContent =
-            titles[sectionId][1];
-
+        document.getElementById("pageSubtitle").textContent =
+            titleMap[sectionId][1];
     }
 
 
-    // ACTIVE NAV ITEM
+    if (sectionId === "trackSection") {
 
-    const navItems =
-        document.querySelectorAll(
-            ".nav-item"
-        );
-
-
-    navItems.forEach(
-        item => {
-
-            item.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    const clickedButton =
-        [
-            ...navItems
-        ].find(
-            button =>
-                button.getAttribute(
-                    "onclick"
-                ) &&
-                button.getAttribute(
-                    "onclick"
-                ).includes(
-                    sectionId
-                )
-        );
-
-
-    if (clickedButton) {
-
-        clickedButton.classList.add(
-            "active"
-        );
-
+        displayStudentComplaints();
     }
 
+
+    if (sectionId === "facultyComplaintsSection") {
+
+        displayFacultyComplaints();
+    }
+
+
+    updateDashboard();
 }
 
 
-// ==========================================
-// COMPLAINT FORM
-// ==========================================
+/* =====================================================
+   GENERATE COMPLAINT ID
+   ===================================================== */
 
-const complaintForm =
-    document.getElementById(
-        "complaintForm"
-    );
+function generateComplaintId() {
 
+    let number = complaints.length + 1;
 
-complaintForm.addEventListener(
-    "submit",
-    function (event) {
-
-        event.preventDefault();
+    let id =
+        "CMP" +
+        String(number).padStart(3, "0");
 
 
-        if (!currentUser) {
+    while (
+        complaints.some(
+            complaint => complaint.id === id
+        )
+    ) {
 
-            alert(
-                "Please login first."
+        number++;
+
+        id =
+            "CMP" +
+            String(number).padStart(3, "0");
+    }
+
+
+    return id;
+}
+
+
+/* =====================================================
+   SUBMIT COMPLAINT
+   ===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* ---------------------------------------------
+           COMPLAINT FORM
+           --------------------------------------------- */
+
+        const complaintForm =
+            document.getElementById("complaintForm");
+
+
+        if (complaintForm) {
+
+            complaintForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    if (!currentUser) {
+
+                        alert("Please login first.");
+
+                        return;
+                    }
+
+
+                    const category =
+                        document.getElementById(
+                            "category"
+                        ).value;
+
+
+                    const complaintTo =
+                        document.getElementById(
+                            "complaintTo"
+                        ).value;
+
+
+                    const subject =
+                        document.getElementById(
+                            "subject"
+                        ).value.trim();
+
+
+                    const location =
+                        document.getElementById(
+                            "location"
+                        ).value.trim();
+
+
+                    const description =
+                        document.getElementById(
+                            "description"
+                        ).value.trim();
+
+
+                    if (
+                        !category ||
+                        !complaintTo ||
+                        !subject ||
+                        !location ||
+                        !description
+                    ) {
+
+                        alert(
+                            "Please fill all complaint details."
+                        );
+
+                        return;
+                    }
+
+
+                    /* --------------------------------
+                       CREATE NEW COMPLAINT
+                       -------------------------------- */
+
+                    const newComplaint = {
+
+                        id: generateComplaintId(),
+
+                        studentId:
+                            currentUser.loginId,
+
+                        studentName:
+                            currentUser.name,
+
+                        complaintTo:
+                            complaintTo,
+
+                        category:
+                            category,
+
+                        subject:
+                            subject,
+
+                        location:
+                            location,
+
+                        description:
+                            description,
+
+                        date:
+                            new Date().toLocaleDateString(),
+
+                        status:
+                            "Pending"
+
+                    };
+
+
+                    /* --------------------------------
+                       SAVE COMPLAINT
+                       -------------------------------- */
+
+                    complaints.push(newComplaint);
+
+
+                    localStorage.setItem(
+                        "complaints",
+                        JSON.stringify(complaints)
+                    );
+
+
+                    alert(
+                        "Complaint submitted successfully!\n\n" +
+                        "Complaint ID: " +
+                        newComplaint.id
+                    );
+
+
+                    complaintForm.reset();
+
+
+                    updateDashboard();
+
+
+                    /*
+                       Student can immediately see
+                       the submitted complaint.
+                    */
+
+                    showSection("trackSection");
+
+                }
             );
-
-            return;
         }
 
 
-        const category =
-            document.getElementById(
-                "category"
-            ).value;
+        /* ---------------------------------------------
+           STATUS UPDATE FORM
+           --------------------------------------------- */
+
+        const statusForm =
+            document.getElementById("statusForm");
 
 
-        const subject =
-            document.getElementById(
-                "subject"
-            )
-            .value
-            .trim();
+        if (statusForm) {
+
+            statusForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
 
 
-        const description =
-            document.getElementById(
-                "description"
-            )
-            .value
-            .trim();
+                    const complaintId =
+                        document.getElementById(
+                            "statusComplaintId"
+                        )
+                        .value
+                        .trim()
+                        .toUpperCase();
 
 
-        const location =
-            document.getElementById(
-                "location"
-            )
-            .value
-            .trim();
+                    const newStatus =
+                        document.getElementById(
+                            "newStatus"
+                        ).value;
 
 
-        if (
-            category === "" ||
-            subject === "" ||
-            description === "" ||
-            location === ""
-        ) {
+                    const complaint =
+                        complaints.find(
+                            item =>
+                                item.id.toUpperCase() ===
+                                complaintId
+                        );
 
-            alert(
-                "Please fill all complaint details."
+
+                    if (!complaint) {
+
+                        alert(
+                            "Complaint ID not found."
+                        );
+
+                        return;
+                    }
+
+
+                    complaint.status =
+                        newStatus;
+
+
+                    localStorage.setItem(
+                        "complaints",
+                        JSON.stringify(complaints)
+                    );
+
+
+                    alert(
+                        "Complaint status updated successfully!"
+                    );
+
+
+                    statusForm.reset();
+
+
+                    displayFacultyComplaints();
+
+                    updateDashboard();
+                }
             );
-
-            return;
         }
 
 
-        // UNIQUE COMPLAINT ID
+        /* ---------------------------------------------
+           PASSWORD FORM
+           --------------------------------------------- */
 
-        const complaintNumber =
-            complaints.length + 1;
-
-
-        const complaint = {
-
-            id:
-                "CMP" +
-                String(
-                    complaintNumber
-                ).padStart(
-                    3,
-                    "0"
-                ),
+        const passwordForm =
+            document.getElementById("passwordForm");
 
 
-            studentId:
-                currentUser.id,
+        if (passwordForm) {
+
+            passwordForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
 
 
-            studentName:
-                currentUser.name,
+                    if (!currentUser) {
+
+                        alert("Please login first.");
+
+                        return;
+                    }
 
 
-            category:
-                category,
+                    const currentPassword =
+                        document.getElementById(
+                            "currentPassword"
+                        ).value;
 
 
-            subject:
-                subject,
+                    const newPassword =
+                        document.getElementById(
+                            "newPassword"
+                        ).value;
 
 
-            description:
-                description,
+                    const confirmPassword =
+                        document.getElementById(
+                            "confirmPassword"
+                        ).value;
 
 
-            location:
-                location,
+                    if (
+                        currentPassword !==
+                        currentUser.password
+                    ) {
+
+                        alert(
+                            "Current password is incorrect."
+                        );
+
+                        return;
+                    }
 
 
-            date:
-                new Date()
-                    .toLocaleDateString(),
+                    if (newPassword.length < 6) {
+
+                        alert(
+                            "New password must contain at least 6 characters."
+                        );
+
+                        return;
+                    }
 
 
-            status:
-                "Pending"
+                    if (
+                        newPassword !==
+                        confirmPassword
+                    ) {
 
-        };
+                        alert(
+                            "New passwords do not match."
+                        );
 
-
-        complaints.push(
-            complaint
-        );
-
-
-        updateDashboard();
-
-        displayStudentComplaints();
-
-        displayFacultyComplaints();
+                        return;
+                    }
 
 
-        complaintForm.reset();
+                    currentUser.password =
+                        newPassword;
 
 
-        alert(
-            "Complaint submitted successfully!\n\n" +
-            "Complaint ID: " +
-            complaint.id
-        );
+                    const userIndex =
+                        registeredUsers.findIndex(
+                            user =>
+                                user.loginId.toLowerCase() ===
+                                currentUser.loginId.toLowerCase() &&
+
+                                user.role ===
+                                currentUser.role
+                        );
 
 
-        showSection(
-            "trackSection"
-        );
+                    if (userIndex !== -1) {
+
+                        registeredUsers[
+                            userIndex
+                        ].password =
+                            newPassword;
+
+
+                        localStorage.setItem(
+                            "registeredUsers",
+                            JSON.stringify(
+                                registeredUsers
+                            )
+                        );
+                    }
+
+
+                    alert(
+                        "Password changed successfully!"
+                    );
+
+
+                    passwordForm.reset();
+
+                }
+            );
+        }
+
+
+        selectRole("student");
+
+        showLogin();
 
     }
 );
 
 
-// ==========================================
-// UPDATE DASHBOARD
-// ==========================================
-
-function updateDashboard() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    const userComplaints =
-        currentUser.role === "student"
-
-            ? complaints.filter(
-                complaint =>
-                    complaint.studentId ===
-                    currentUser.id
-            )
-
-            : complaints;
-
-
-    const total =
-        userComplaints.length;
-
-
-    const pending =
-        userComplaints.filter(
-            complaint =>
-                complaint.status ===
-                "Pending"
-        ).length;
-
-
-    const progress =
-        userComplaints.filter(
-            complaint =>
-                complaint.status ===
-                "In Progress"
-        ).length;
-
-
-    const resolved =
-        userComplaints.filter(
-            complaint =>
-                complaint.status ===
-                "Resolved"
-        ).length;
-
-
-    document.getElementById(
-        "totalComplaints"
-    ).textContent =
-        total;
-
-
-    document.getElementById(
-        "pendingComplaints"
-    ).textContent =
-        pending;
-
-
-    document.getElementById(
-        "progressComplaints"
-    ).textContent =
-        progress;
-
-
-    document.getElementById(
-        "resolvedComplaints"
-    ).textContent =
-        resolved;
-
-}
-
-
-// ==========================================
-// STUDENT COMPLAINTS
-// ==========================================
+/* =====================================================
+   STUDENT COMPLAINTS
+   ===================================================== */
 
 function displayStudentComplaints() {
 
-    const table =
+    const tableBody =
         document.getElementById(
             "complaintTableBody"
         );
 
 
-    table.innerHTML = "";
+    if (!tableBody || !currentUser) {
 
-
-    if (!currentUser) {
         return;
     }
+
+
+    tableBody.innerHTML = "";
 
 
     const studentComplaints =
         complaints.filter(
             complaint =>
                 complaint.studentId ===
-                currentUser.id
+                currentUser.loginId
         );
 
 
-    if (
-        studentComplaints.length === 0
-    ) {
+    if (studentComplaints.length === 0) {
 
-        table.innerHTML = `
+        tableBody.innerHTML = `
+
             <tr>
-                <td colspan="5">
+
+                <td colspan="6"
+                    style="text-align:center;">
+
                     No complaints submitted yet.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
@@ -917,17 +902,17 @@ function displayStudentComplaints() {
         complaint => {
 
             const row =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
 
             row.innerHTML = `
 
                 <td>
-                    <strong>
-                        ${complaint.id}
-                    </strong>
+                    ${complaint.id}
+                </td>
+
+                <td>
+                    ${complaint.complaintTo}
                 </td>
 
                 <td>
@@ -943,68 +928,73 @@ function displayStudentComplaints() {
                 </td>
 
                 <td>
-
-                    <span class="status ${getStatusClass(
-                        complaint.status
-                    )}">
-
-                        ${complaint.status}
-
-                    </span>
-
+                    ${complaint.status}
                 </td>
 
             `;
 
 
-            table.appendChild(
-                row
-            );
-
+            tableBody.appendChild(row);
         }
     );
-
 }
 
 
-// ==========================================
-// FACULTY COMPLAINTS
-// ==========================================
+/* =====================================================
+   FACULTY - VIEW ALL COMPLAINTS
+   ===================================================== */
 
 function displayFacultyComplaints() {
 
-    const table =
+    const tableBody =
         document.getElementById(
             "facultyComplaintTable"
         );
 
 
-    table.innerHTML = "";
+    if (!tableBody) {
+
+        return;
+    }
 
 
-    if (
-        complaints.length === 0
-    ) {
+    tableBody.innerHTML = "";
 
-        table.innerHTML = `
+
+    /* ---------------------------------------------
+       NO COMPLAINTS
+       --------------------------------------------- */
+
+    if (complaints.length === 0) {
+
+        tableBody.innerHTML = `
+
             <tr>
-                <td colspan="6">
-                    No complaints available.
+
+                <td colspan="6"
+                    style="text-align:center;">
+
+                    No complaints submitted by students yet.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
     }
 
 
+    /* ---------------------------------------------
+       SHOW EVERY STUDENT COMPLAINT
+       --------------------------------------------- */
+
     complaints.forEach(
         complaint => {
 
             const row =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
 
             row.innerHTML = `
@@ -1017,10 +1007,14 @@ function displayFacultyComplaints() {
 
                 <td>
                     ${complaint.studentId}
+                    <br>
+                    <small>
+                        ${complaint.studentName || ""}
+                    </small>
                 </td>
 
                 <td>
-                    ${complaint.studentName}
+                    ${complaint.complaintTo}
                 </td>
 
                 <td>
@@ -1028,351 +1022,181 @@ function displayFacultyComplaints() {
                 </td>
 
                 <td>
-                    ${complaint.subject}
+                    <strong>
+                        ${complaint.subject}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        ${complaint.description}
+                    </small>
+
+                    <br>
+
+                    <small>
+                        📍 ${complaint.location}
+                    </small>
+
+                    <br>
+
+                    <small>
+                        📅 ${complaint.date}
+                    </small>
                 </td>
 
                 <td>
-
-                    <span class="status ${getStatusClass(
-                        complaint.status
-                    )}">
-
+                    <span class="status-badge ${getStatusClass(complaint.status)}">
                         ${complaint.status}
-
                     </span>
-
                 </td>
 
             `;
 
 
-            table.appendChild(
-                row
-            );
+            tableBody.appendChild(row);
 
         }
     );
-
 }
 
 
-// ==========================================
-// STATUS CLASS
-// ==========================================
+/* =====================================================
+   STATUS COLOR CLASS
+   ===================================================== */
 
 function getStatusClass(status) {
 
-    if (
-        status === "Pending"
-    ) {
+    if (status === "Pending") {
 
-        return "pending";
-
+        return "status-pending";
     }
 
 
-    if (
-        status === "In Progress"
-    ) {
+    if (status === "In Progress") {
 
-        return "progress";
-
+        return "status-progress";
     }
 
 
-    if (
-        status === "Resolved"
-    ) {
+    if (status === "Resolved") {
 
-        return "resolved";
-
+        return "status-resolved";
     }
 
 
     return "";
-
 }
 
 
-// ==========================================
-// UPDATE COMPLAINT STATUS
-// ==========================================
+/* =====================================================
+   UPDATE DASHBOARD COUNTS
+   ===================================================== */
 
-const statusForm =
-    document.getElementById(
-        "statusForm"
-    );
+function updateDashboard() {
 
+    if (!currentUser) {
 
-statusForm.addEventListener(
-    "submit",
-    function (event) {
-
-        event.preventDefault();
-
-
-        // ONLY FACULTY CAN UPDATE STATUS
-
-        if (
-            !currentUser ||
-            currentUser.role !== "faculty"
-        ) {
-
-            alert(
-                "Only faculty can update complaint status."
-            );
-
-            return;
-        }
-
-
-        const complaintId =
-            document.getElementById(
-                "statusComplaintId"
-            )
-            .value
-            .trim()
-            .toUpperCase();
-
-
-        const newStatus =
-            document.getElementById(
-                "newStatus"
-            ).value;
-
-
-        const complaint =
-            complaints.find(
-                item =>
-                    item.id ===
-                    complaintId
-            );
-
-
-        if (!complaint) {
-
-            alert(
-                "Complaint ID not found."
-            );
-
-            return;
-        }
-
-
-        if (newStatus === "") {
-
-            alert(
-                "Please select a status."
-            );
-
-            return;
-        }
-
-
-        complaint.status =
-            newStatus;
-
-
-        updateDashboard();
-
-        displayStudentComplaints();
-
-        displayFacultyComplaints();
-
-
-        statusForm.reset();
-
-
-        alert(
-            "Complaint status updated successfully!"
-        );
-
+        return;
     }
-);
 
 
-// ==========================================
-// CHANGE PASSWORD
-// ==========================================
-
-const passwordForm =
-    document.getElementById(
-        "passwordForm"
-    );
+    let userComplaints;
 
 
-passwordForm.addEventListener(
-    "submit",
-    function (event) {
+    if (currentUser.role === "student") {
 
-        event.preventDefault();
-
-
-        // CHECK LOGIN
-
-        if (!currentUser) {
-
-            alert(
-                "Please login first."
+        userComplaints =
+            complaints.filter(
+                complaint =>
+                    complaint.studentId ===
+                    currentUser.loginId
             );
 
-            return;
-        }
+    } else {
 
+        /*
+           Faculty sees ALL complaints.
+        */
 
-        const currentPassword =
-            document.getElementById(
-                "currentPassword"
-            ).value;
-
-
-        const newPassword =
-            document.getElementById(
-                "newPassword"
-            ).value;
-
-
-        const confirmPassword =
-            document.getElementById(
-                "confirmPassword"
-            ).value;
-
-
-        // EMPTY CHECK
-
-        if (
-            currentPassword === "" ||
-            newPassword === "" ||
-            confirmPassword === ""
-        ) {
-
-            alert(
-                "Please fill all password fields."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // CHECK CURRENT PASSWORD
-        // ==========================
-
-        const user =
-            users[currentUser.id];
-
-
-        if (
-            !user ||
-            user.password !==
-            currentPassword
-        ) {
-
-            alert(
-                "Current password is incorrect."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // NEW PASSWORD LENGTH
-        // ==========================
-
-        if (
-            newPassword.length < 6
-        ) {
-
-            alert(
-                "New password must contain at least 6 characters."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // SAME PASSWORD CHECK
-        // ==========================
-
-        if (
-            newPassword ===
-            currentPassword
-        ) {
-
-            alert(
-                "New password must be different from current password."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // CONFIRM PASSWORD
-        // ==========================
-
-        if (
-            newPassword !==
-            confirmPassword
-        ) {
-
-            alert(
-                "New password and confirm password do not match."
-            );
-
-            return;
-        }
-
-
-        // ==========================
-        // UPDATE PASSWORD
-        // ==========================
-
-        user.password =
-            newPassword;
-
-
-        // ==========================
-        // UPDATE CURRENT USER
-        // ==========================
-
-        currentUser.password =
-            newPassword;
-
-
-        passwordForm.reset();
-
-
-        alert(
-            "Password changed successfully!\n\n" +
-            "You can now login using your new password."
-        );
-
-
-        // GO TO DASHBOARD
-
-        showSection(
-            "dashboardSection"
-        );
-
+        userComplaints = complaints;
     }
-);
 
 
-// ==========================================
-// INITIAL SETUP
-// ==========================================
-
-loginPage.style.display =
-    "flex";
+    const total =
+        userComplaints.length;
 
 
-dashboardPage.style.display =
-    "none";
+    const pending =
+        userComplaints.filter(
+            complaint =>
+                complaint.status === "Pending"
+        ).length;
 
 
-selectRole(
-    "student"
-);
+    const progress =
+        userComplaints.filter(
+            complaint =>
+                complaint.status === "In Progress"
+        ).length;
+
+
+    const resolved =
+        userComplaints.filter(
+            complaint =>
+                complaint.status === "Resolved"
+        ).length;
+
+
+    document.getElementById(
+        "totalComplaints"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "pendingComplaints"
+    ).textContent = pending;
+
+
+    document.getElementById(
+        "progressComplaints"
+    ).textContent = progress;
+
+
+    document.getElementById(
+        "resolvedComplaints"
+    ).textContent = resolved;
+}
+
+
+/* =====================================================
+   PROFILE
+   ===================================================== */
+
+function updateProfile() {
+
+    if (!currentUser) {
+
+        return;
+    }
+
+
+    document.getElementById(
+        "profileId"
+    ).value =
+        currentUser.loginId;
+
+
+    document.getElementById(
+        "profileName"
+    ).value =
+        currentUser.name;
+
+
+    document.getElementById(
+        "profileRole"
+    ).value =
+        currentUser.role === "student"
+            ? "Student"
+            : "Faculty";
+}
