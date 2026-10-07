@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Complaint Tracking System</title>
+
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+
+
+<!-- ==========================================
+     LOGIN PAGE
+     ========================================== -->
+
+<div id="loginPage" class="login-page">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            CTS
+        </div>
+
+        <h1>Complaint Tracking System</h1>
+
+        <p class="login-subtitle">
+            Student & Faculty Portal
+        </p>
+
+
+        <!-- ROLE SELECTION -->
+
+        <div class="role-selection">
+
+            <button
+                type="button"
+                id="studentRoleBtn"
+                class="role-btn active"
+                onclick="selectRole('student')">
+
+                👨‍🎓 Student Login
+
+            </button>
+
+
+            <button
+                type="button"
+                id="facultyRoleBtn"
+                class="role-btn"
+                onclick="selectRole('faculty')">
+
+                👨‍🏫 Faculty Login
+
+            </button>
+
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <form id="loginForm">
+
+            <div class="input-group">
+
+                <label id="loginIdLabel">
+                    Student ID
+                </label>
+
+                <input
+                    type="text"
+                    id="studentId"
+                    placeholder="Example: STU2026001"
+                    autocomplete="off"
+                    required
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <p class="login-note">
+            Use your registered Student ID or Faculty ID
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     DASHBOARD PAGE
+     ========================================== -->
+
+<div id="dashboardPage" class="dashboard-page">
+
+
+    <!-- ======================================
+         SIDEBAR
+         ====================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <div class="logo-circle">
+                CTS
+            </div>
+
+            <h2>
+                Complaint<br>
+                Tracking System
+            </h2>
+
+        </div>
+
+
+        <div id="userRole" class="user-role">
+            Student Portal
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- STUDENT MENU -->
+
+            <div id="studentMenu">
+
+                <button
+                    class="nav-item active"
+                    onclick="showSection('dashboardSection')">
+
+                    🏠 Dashboard
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    onclick="showSection('submitSection')">
+
+                    📝 Submit Complaint
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    onclick="showSection('trackSection')">
+
+                    🔍 Track Complaints
+
+                </button>
+
+            </div>
+
+
+
+            <!-- FACULTY MENU -->
+
+            <div
+                id="facultyMenu"
+                style="display:none;">
+
+                <button
+                    class="nav-item active"
+                    onclick="showSection('dashboardSection')">
+
+                    🏠 Dashboard
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    onclick="showSection('facultyComplaintsSection')">
+
+                    📋 View Complaints
+
+                </button>
+
+
+                <button
+                    class="nav-item"
+                    onclick="showSection('updateStatusSection')">
+
+                    🔄 Update Status
+
+                </button>
+
+            </div>
+
+
+
+            <!-- COMMON MENU -->
+
+            <button
+                class="nav-item"
+                onclick="showSection('profileSection')">
+
+                👤 My Profile
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('passwordSection')">
+
+                🔐 Change Password
+
+            </button>
+
+
+            <button
+                id="logoutBtn"
+                class="nav-item logout-btn">
+
+                🚪 Logout
+
+            </button>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- ======================================
+         MAIN CONTENT
+         ====================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h2 id="pageTitle">
+                    Dashboard
+                </h2>
+
+                <p id="pageSubtitle">
+                    Welcome to Complaint Tracking System
+                </p>
+
+            </div>
+
+
+            <div class="top-user">
+
+                <div class="user-avatar">
+                    👤
+                </div>
+
+
+                <div>
+
+                    <!-- ACTUAL NAME WILL APPEAR HERE -->
+
+                    <strong id="studentName">
+                        User
+                    </strong>
+
+
+                    <small id="topUserRole">
+                        Student
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             DASHBOARD
+             ====================================== -->
+
+        <section
+            id="dashboardSection"
+            class="content-section">
+
+
+            <div class="welcome-card">
+
+                <h1>
+                    Welcome,
+                    <span id="welcomeName">
+                        User
+                    </span>! 👋
+                </h1>
+
+                <p>
+                    Manage and track complaints easily from your portal.
+                </p>
+
+            </div>
+
+
+
+            <!-- STUDENT STATISTICS -->
+
+            <div
+                id="studentStats"
+                class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        📋
+                    </div>
+
+                    <div>
+
+                        <h3 id="totalComplaints">
+                            0
+                        </h3>
+
+                        <p>
+                            Total Complaints
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ⏳
+                    </div>
+
+                    <div>
+
+                        <h3 id="pendingComplaints">
+                            0
+                        </h3>
+
+                        <p>
+                            Pending
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🔄
+                    </div>
+
+                    <div>
+
+                        <h3 id="progressComplaints">
+                            0
+                        </h3>
+
+                        <p>
+                            In Progress
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ✅
+                    </div>
+
+                    <div>
+
+                        <h3 id="resolvedComplaints">
+                            0
+                        </h3>
+
+                        <p>
+                            Resolved
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FACULTY DASHBOARD -->
+
+            <div
+                id="facultyDashboard"
+                class="faculty-info-card"
+                style="display:none;">
+
+                <h2>
+                    Faculty Dashboard 👨‍🏫
+                </h2>
+
+                <p>
+                    View student complaints and update their status
+                    from the faculty portal.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             SUBMIT COMPLAINT
+             ====================================== -->
+
+        <section
+            id="submitSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card">
+
+                <h2>
+                    Submit Complaint
+                </h2>
+
+                <p>
+                    Submit your complaint with the required details.
+                </p>
+
+
+                <form id="complaintForm">
+
+
+                    <div class="form-row">
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Complaint Category
+                            </label>
+
+                            <select
+                                id="category"
+                                required>
+
+                                <option value="">
+                                    Select Category
+                                </option>
+
+                                <option value="Academic">
+                                    Academic
+                                </option>
+
+                                <option value="Hostel">
+                                    Hostel
+                                </option>
+
+                                <option value="Transport">
+                                    Transport
+                                </option>
+
+                                <option value="Infrastructure">
+                                    Infrastructure
+                                </option>
+
+                                <option value="Faculty">
+                                    Faculty
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="input-group">
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                placeholder="Enter location"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Complaint Subject
+                        </label>
+
+                        <input
+                            type="text"
+                            id="subject"
+                            placeholder="Enter complaint subject"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Complaint Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            rows="6"
+                            placeholder="Describe your complaint..."
+                            required></textarea>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn">
+
+                        Submit Complaint
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             TRACK COMPLAINTS
+             ====================================== -->
+
+        <section
+            id="trackSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card">
+
+                <h2>
+                    Track Complaints
+                </h2>
+
+                <p>
+                    Track the status of your submitted complaints.
+                </p>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Complaint ID
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Subject
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="complaintTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             FACULTY COMPLAINTS
+             ====================================== -->
+
+        <section
+            id="facultyComplaintsSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card">
+
+                <h2>
+                    Student Complaints
+                </h2>
+
+                <p>
+                    View complaints submitted by students.
+                </p>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Complaint ID
+                                </th>
+
+                                <th>
+                                    Student ID
+                                </th>
+
+                                <th>
+                                    Student Name
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Subject
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="facultyComplaintTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             UPDATE STATUS
+             ====================================== -->
+
+        <section
+            id="updateStatusSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card">
+
+                <h2>
+                    Update Complaint Status
+                </h2>
+
+                <p>
+                    Update the status of a student complaint.
+                </p>
+
+
+                <form id="statusForm">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Complaint ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="statusComplaintId"
+                            placeholder="Example: CMP001"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            New Status
+                        </label>
+
+                        <select
+                            id="newStatus"
+                            required>
+
+                            <option value="">
+                                Select Status
+                            </option>
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="In Progress">
+                                In Progress
+                            </option>
+
+                            <option value="Resolved">
+                                Resolved
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn">
+
+                        Update Status
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             MY PROFILE
+             ====================================== -->
+
+        <section
+            id="profileSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card profile-card">
+
+                <h2>
+                    My Profile
+                </h2>
+
+                <p>
+                    View your account information.
+                </p>
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+
+                    <div>
+
+                        <span>
+                            User ID
+                        </span>
+
+                        <strong id="profileId">
+                            -
+                        </strong>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <span>
+                            Name
+                        </span>
+
+                        <strong id="profileName">
+                            -
+                        </strong>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <span>
+                            Role
+                        </span>
+
+                        <strong id="profileRole">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             CHANGE PASSWORD
+             ====================================== -->
+
+        <section
+            id="passwordSection"
+            class="content-section"
+            style="display:none;">
+
+            <div class="section-card profile-card">
+
+                <h2>
+                    Change Password
+                </h2>
+
+                <p>
+                    Update your account password.
+                </p>
+
+
+                <form id="passwordForm">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Current Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            placeholder="Enter current password"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter new password"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Confirm New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm new password"
+                            required>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="submit-btn">
+
+                        Change Password
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="student.js"></script>
+
+</body>
+</html>
